@@ -5,6 +5,6 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
-    url: jdbc:postgresql://localhost:5432/pictures-api
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/pictures-api
     username: postgres
     password: postgres
