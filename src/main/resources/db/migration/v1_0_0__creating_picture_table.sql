@@ -1,0 +1,5 @@
+CREATE TABLE picture (
+    id VARCHAR(40) PRIMARY KEY NOT NULL,
+    url VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP NOT NULL
+)

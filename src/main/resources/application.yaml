@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: picture_service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/pictures-api
+    username: postgres
+    password: postgres
