@@ -1,6 +1,9 @@
 spring:
   application:
     name: picture_service
+  jpa:
+    hibernate:
+      ddl-auto: update
   datasource:
     url: jdbc:postgresql://localhost:5432/pictures-api
     username: postgres
