@@ -28,6 +28,12 @@ kind load docker-image ickee953/pictures-api:1.0.0
 
 echo "Done."
 
+echo "Apply ingress plugin..."
+
+kubectl apply -f ingress-nginx.yaml
+
+kubectl wait --namespace ingress-nginx --for=condition=ready pod --selector=app.kubernetes.io/component=controller --timeout=180s
+
 echo "Apply k8s configs..."
 
 kubectl apply -f k8s/deployment.yaml
