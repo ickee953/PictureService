@@ -1,3 +1,5 @@
+#!/bin/sh
+
 export JAVA_HOME="/usr/lib64/java/jdk-17.0.1"
 
 echo "Building jar..."
