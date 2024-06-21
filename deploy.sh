@@ -8,7 +8,7 @@ echo "Done."
 
 echo "Creating Kubernetes cluster..."
 
-kind create cluster --config kind-config.yaml
+kind create cluster --config ../ClusterConfig/kind-config.yaml
 
 echo "Done."
 
@@ -34,7 +34,7 @@ kubectl apply -f k8s/service.yaml
 
 echo "Service done."
 
-kubectl apply -f k8s/ingress.yaml
+kubectl apply -f ../ClusterConfig/ingress.yaml
 
 echo "Ingress plugin config done."
 
@@ -50,7 +50,7 @@ echo "Done."
 
 echo "Run PostreSQL DB server..."
 
-docker-compose -f compose-env.yaml up -d
+docker-compose -f ../ClusterConfig/db-compose-env.yaml up -d
 
 echo "Done."
 
