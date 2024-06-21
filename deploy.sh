@@ -8,7 +8,12 @@ echo "Done."
 
 echo "Creating Kubernetes cluster..."
 
-kind create cluster --config ../ClusterConfig/kind-config.yaml
+if [ ! -f ../ServiceConfig/kind-config.yaml ]; then
+    echo "Config file for kind not found! Get config repository..."
+    git clone https://github.com/ickee953/ServiceConfig.git ../ServiceConfig
+fi
+
+kind create cluster --config ../ServiceConfig/kind-config.yaml
 
 echo "Done."
 
@@ -34,7 +39,12 @@ kubectl apply -f k8s/service.yaml
 
 echo "Service done."
 
-kubectl apply -f ../ClusterConfig/ingress.yaml
+if [ ! -f ../ServiceConfig/kind-config.yaml ]; then
+    echo "Config file for ingress not found! Get config repository..."
+    git clone https://github.com/ickee953/ServiceConfig.git ../ServiceConfig
+fi
+
+kubectl apply -f ../ServiceConfig/ingress.yaml
 
 echo "Ingress plugin config done."
 
@@ -50,7 +60,12 @@ echo "Done."
 
 echo "Run PostreSQL DB server..."
 
-docker-compose -f ../ClusterConfig/db-compose-env.yaml up -d
+if [ ! -f ../ServiceConfig/kind-config.yaml ]; then
+    echo "Config file for database docker image not found! Get config repository..."
+    git clone https://github.com/ickee953/ServiceConfig.git ../ServiceConfig
+fi
+
+docker-compose -f ../ServiceConfig/db-compose-env.yaml up -d
 
 echo "Done."
 
