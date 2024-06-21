@@ -1,8 +1,15 @@
-package com.github.ickee953.service.pictures.service;
+/**
+ * © Panov Vitaly 2024 - All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ */
 
-import com.github.ickee953.service.pictures.client.PictureClient;
-import com.github.ickee953.service.pictures.entity.Picture;
-import com.github.ickee953.service.pictures.repository.PictureRepository;
+package com.github.ickee953.micros.pictures.service;
+
+import com.github.ickee953.micros.pictures.client.PictureClient;
+import com.github.ickee953.micros.pictures.entity.Picture;
+import com.github.ickee953.micros.pictures.repository.PictureRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

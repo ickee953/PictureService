@@ -1,4 +1,11 @@
-package com.github.ickee953.service.pictures.client;
+/**
+ * © Panov Vitaly 2024 - All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ */
+
+package com.github.ickee953.micros.pictures.client;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;

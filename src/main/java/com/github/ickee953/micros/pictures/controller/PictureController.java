@@ -1,7 +1,14 @@
-package com.github.ickee953.service.pictures.controller;
+/**
+ * © Panov Vitaly 2024 - All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ */
 
-import com.github.ickee953.service.pictures.entity.Picture;
-import com.github.ickee953.service.pictures.service.PictureService;
+package com.github.ickee953.micros.pictures.controller;
+
+import com.github.ickee953.micros.pictures.entity.Picture;
+import com.github.ickee953.micros.pictures.service.PictureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
