@@ -8,11 +8,14 @@
 package com.github.ickee953.micros.pictures.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -20,7 +23,8 @@ import java.time.LocalDateTime;
 public class Picture {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
     private String url;
     private LocalDateTime createdAt;
 

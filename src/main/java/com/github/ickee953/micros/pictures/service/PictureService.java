@@ -8,11 +8,15 @@
 package com.github.ickee953.micros.pictures.service;
 
 import com.github.ickee953.micros.pictures.client.PictureClient;
+import com.github.ickee953.micros.pictures.dto.PictureDto;
 import com.github.ickee953.micros.pictures.entity.Picture;
 import com.github.ickee953.micros.pictures.repository.PictureRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -43,8 +47,14 @@ public class PictureService {
         return pictureRepository.findAll();
     }
 
-    public List<Picture> uploadFiles( List<MultipartFile> files ) {
+    public Picture add(PictureDto picture) {
+        return pictureRepository.save( new Picture()
+                .setUrl(picture.getFilename())
+                .setCreatedAt(LocalDateTime.now())
+        );
+    }
 
+    public List<String> uploadFiles( List<MultipartFile> files ) {
         int currentPicNum           = 0;
         List<String> uploadedUrls   = new LinkedList<>();
         Lock locker                 = new ReentrantLock();
@@ -57,19 +67,27 @@ public class PictureService {
             new Thread(new UploadFileOrdered(currentPicNum) {
                 @Override
                 public void run() {
-                    String uploadedFilename = pictureClient.uploadFile(file);
-                    locker.lock();
+                    String uploadedFilename = null;
                     try {
-                        while (this.fileIndex > finalUploadedUrls.size())
-                            condition.await();
+                        uploadedFilename = pictureClient.uploadFile(file);
 
-                        condition.signalAll();
-                    } catch (InterruptedException e) {
+                        locker.lock();
+                        try {
+                            while (this.fileIndex > finalUploadedUrls.size())
+                                condition.await();
+
+                            condition.signalAll();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace(System.err);
+                        } finally {
+                            finalUploadedUrls.add(uploadedFilename);
+                            locker.unlock();
+                            phase.arriveAndDeregister();
+                        }
+
+                    } catch (IOException e) {
                         e.printStackTrace(System.err);
-                    } finally {
-                        finalUploadedUrls.add(uploadedFilename);
-                        locker.unlock();
-                        phase.arriveAndDeregister();
+                        //todo add currentPicNum file with file.getOriginalFilename() to errors list
                     }
                 }
             }).start();
@@ -80,7 +98,7 @@ public class PictureService {
         uploadedUrls = uploadedUrls.stream().filter(Objects::nonNull).toList();  //remove null elements
         phase.arriveAndDeregister();
 
-        return uploadedUrls.stream().map( url -> new Picture().setUrl(url) ).toList();
+        return uploadedUrls;
     }
 
 }

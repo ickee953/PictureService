@@ -7,6 +7,7 @@
 
 package com.github.ickee953.micros.pictures.controller;
 
+import com.github.ickee953.micros.pictures.dto.PictureDto;
 import com.github.ickee953.micros.pictures.entity.Picture;
 import com.github.ickee953.micros.pictures.service.PictureService;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +24,17 @@ public class PictureController {
     private final PictureService pictureService;
 
     @PostMapping
-    public List<Picture> save(@RequestPart(name = "files", required = true) List<MultipartFile> pics) {
-        return pictureService.uploadFiles(pics);
+    public Iterable<Picture> save(@RequestPart(name = "files", required = true) List<MultipartFile> pics) {
+        List<String> uploadedFilesPaths = pictureService.uploadFiles(pics);
+
+        uploadedFilesPaths.forEach( url -> {
+            PictureDto dto = new PictureDto(url);
+
+            pictureService.add( dto );
+        } );
+
+
+        return pictureService.getAll();
     }
 
     @GetMapping

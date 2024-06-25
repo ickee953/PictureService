@@ -7,7 +7,8 @@
 
 package com.github.ickee953.micros.pictures.client;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -20,37 +21,47 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Component
-@RequiredArgsConstructor
 public class PictureClient {
 
-    protected final static String URL_STORAGE_SERVICE = "http://172.17.0.2:8081";
-    protected final static String METHOD_UPLOAD_FILE  = "/upload";
-    protected final static String METHOD_GET_FILE     = "/files";
-
+    private final String storageServiceUrl;
+    private final String storageServiceUrlUpload;
+    private final String storageServiceUrlFiles;
     private final RestTemplate restTemplate;
 
-    public String uploadFile( MultipartFile file ) {
+    @Autowired
+    public PictureClient(
+            @Value(value = "${url.service.storage.base}") String storageServiceUrl,
+            @Value(value = "${url.service.storage.upload}") String storageServiceUrlUpload,
+            @Value(value = "${url.service.storage.files}") String storageServiceUrlFiles,
+            RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+        this.storageServiceUrl = storageServiceUrl;
+        this.storageServiceUrlUpload = storageServiceUrlUpload;
+        this.storageServiceUrlFiles = storageServiceUrlFiles;
+    }
+
+    /**
+     * throws IOException then can't get input stream from MultipartFile function param.
+     * */
+    public String uploadFile( MultipartFile file ) throws IOException {
+        InputStream inputStream = file.getInputStream();
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        try {
-            body.add("files", new MultipartInputStreamFileResource(file.getInputStream(), file.getOriginalFilename()));
-        } catch (IOException e) {
-            return null;
-        }
+
+        body.add("files", new MultipartInputStreamFileResource(inputStream, file.getOriginalFilename()));
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
-        //todo get url from properties depend on development/release mode
-        String serverUrl = URL_STORAGE_SERVICE + METHOD_UPLOAD_FILE;
+        String serverUrl = storageServiceUrl + storageServiceUrlUpload;
 
         //todo catch java.net.ConnectException
-        ResponseEntity<String> response = restTemplate
-                .postForEntity(serverUrl, requestEntity, String.class);
+        ResponseEntity<String> response = restTemplate.postForEntity(serverUrl, requestEntity, String.class);
 
         if( response.getStatusCode() == HttpStatus.OK ){
-            return METHOD_GET_FILE + "/" + response.getBody();
+            return storageServiceUrlFiles + "/" + response.getBody();
         } else {
             return null;
         }

@@ -7,9 +7,11 @@
 
 package com.github.ickee953.micros.pictures.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class PictureDto {
     private String filename;
 }
