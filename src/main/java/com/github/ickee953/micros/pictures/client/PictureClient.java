@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.ConnectException;
 
 @Component
 public class PictureClient {
@@ -57,14 +58,17 @@ public class PictureClient {
 
         String serverUrl = storageServiceUrl + storageServiceUrlUpload;
 
-        //todo catch java.net.ConnectException
-        ResponseEntity<String> response = restTemplate.postForEntity(serverUrl, requestEntity, String.class);
+        try {
+            ResponseEntity<String> response = restTemplate.postForEntity(serverUrl, requestEntity, String.class);
 
-        if( response.getStatusCode() == HttpStatus.OK ){
-            return storageServiceUrlFiles + "/" + response.getBody();
-        } else {
-            return null;
+            if( response.getStatusCode() == HttpStatus.OK ){
+                return storageServiceUrlFiles + "/" + response.getBody();
+            }
+        } catch (Exception e){
+            e.printStackTrace(System.err);
         }
+
+        return null;
     }
 
     protected static class MultipartInputStreamFileResource extends InputStreamResource {
