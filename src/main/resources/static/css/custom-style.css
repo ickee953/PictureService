@@ -1,0 +1,226 @@
+.text a,
+.text a:focus{
+  color: #555;
+  text-decoration: underline;
+}
+
+.text a:hover {
+  color: #555;box-shadow
+  text-decoration: none !important;
+}
+
+.hover-tools {
+  color: #333;
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 24px;
+  height: 24px;
+  background: #fff;
+  border-radius: 12px;
+  display: block;
+}
+
+.hover-tools-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+/*.col .hover-tools-wrap i {
+  color: #fff;
+}*/
+
+/*.col .hover-tools-wrap {
+  top: 0;
+  right: 0;
+  margin-right: 15px;
+  position: absolute;
+}*/
+
+.pointer {
+  cursor: pointer;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.invisible {
+  display: none;
+}
+
+.item-container {
+  width: 100%;
+  min-height: 150px;
+  background: #aaa;
+  color: #fff;
+  margin-bottom: 2.142rem;
+}
+
+.gallery .item-container {
+  height: 150px;
+}
+
+.gallery img {
+    width: 100%;
+    margin-bottom: 2.142rem;
+}
+
+.item-container h1 {
+  font-size: 1.75rem;
+}
+
+.item-container h3 {
+  font-size: 1.2rem;
+}
+
+.section-tools {
+  position: absolute;
+}
+
+.header-title {
+  font-size: 3.3125rem;
+  line-height: 1.15em;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 300;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: inherit;
+  background-image: none !important;
+}
+
+.header-subtitle {
+  font-size: 1.5625rem;
+  line-height: 1.4em;
+  margin: 20px 0 10px;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 300;
+  background-image: none !important;
+}
+
+.section-title {
+  margin-bottom: 2.142rem;
+  margin-top: 30px;
+  min-height: 32px;
+  color: #3C4858;
+  text-decoration: none;
+  font-size: 2.25rem;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 300;
+  line-height: 1.5em;
+  background-image: none !important;
+}
+
+.section-text {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #999999;
+  background-image: none !important;
+}
+
+.pagination .page-item .page-link:focus {
+  box-shadow: none;
+}
+
+.pagination {
+  display: ruby;
+  padding-left: 0;
+  list-style: none;
+  border-radius: 0.25rem;
+}
+
+.pagination>.page-item>.page-link {
+  border: 0;
+  border-radius: 30px !important;
+  transition: all .3s;
+  padding: 0px 11px;
+  margin: 0 3px;
+  min-width: 30px;
+  height: 30px;
+  line-height: 30px;
+  color: #999999;
+  font-weight: 400;
+  font-size: 12px;
+  text-transform: uppercase;
+  background: transparent;
+  text-align: center;
+}
+
+.pagination>.page-item>.page-link:hover,
+.pagination>.page-item>.page-link:focus {
+  color: #999999;
+}
+
+.pagination>.page-item.active>a {
+  color: #999999;
+}
+
+.pagination>.page-item.active>a,
+.pagination>.page-item.active>a:focus,
+.pagination>.page-item.active>a:hover {
+  background-color: #999;
+  border-color: #999;
+  color: #ffffff;
+  box-shadow: 0 4px 5px 0 rgba(153, 153, 153, 0.14), 0 1px 10px 0 rgba(153, 153, 153, 0.12), 0 2px 4px -1px rgba(153, 153, 153, 0.2);
+}
+
+a {
+    color: #555;
+}
+
+a:hover,
+a:focus {
+  color: #999;
+}
+
+//.account-nav-item .nav-link {
+//  text-transform: lowercase !important;
+//}
+
+.btn-acidy-green {
+
+}
+
+.card-login .form {
+    min-height: 230px !important;
+}
+
+.invalid {
+    background-image: linear-gradient(to top, #f44336 2px, rgba(244, 67, 54, 0) 2px),
+                      linear-gradient(to top, #d2d2d2 1px, rgba(210, 210, 210, 0) 1px) !important;
+}
+
+.is-focused [class^='bmd-label'],
+.is-focused [class*=' bmd-label'] {
+  color: #999999 !important;
+}
+
+.lowercase {
+  text-transform: lowercase !important;
+}
+
+/*.material-icons {
+    color: #6c757d;
+}*/
+
+.modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 0px !important;
+    border-top-left-radius: 0.3rem;
+    border-top-right-radius: 0.3rem;
+}
+
+.modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 1rem;
+    border-top: 0px !important;
+}
+
+.form-check .form-check-input:checked~.form-check-sign .check {
+     background: #3c4858;
+ }
