@@ -12,6 +12,8 @@ import com.github.ickee953.micros.pictures.dto.PictureDto;
 import com.github.ickee953.micros.pictures.entity.Picture;
 import com.github.ickee953.micros.pictures.repository.PictureRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,6 +47,10 @@ public class PictureService {
 
     public Iterable<Picture> getAll() {
         return pictureRepository.findAll();
+    }
+
+    public Page<Picture> getAll(Pageable pageable) {
+        return pictureRepository.findAll(pageable);
     }
 
     public Picture add(PictureDto picture) {
