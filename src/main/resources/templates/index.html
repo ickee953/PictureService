@@ -15,6 +15,97 @@
     <!-- Custom CSS Styles -->
     <link th:href="@{'/css/custom-style.css'}" rel="stylesheet" />
 </head>
-<body>
+<body class="">
+<div class="wrapper ">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div id="pictures" class="gallery"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cropDialog" class="modal">
+        <div class="card modal-content">
+            <div class="card-body">
+                <div class="row">
+                    <div class="container jcrop-ux-no-outline" style="display: inherit;">
+                        <img id="inputCropImage" src="" class="rounded"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="container">
+                        <div class="text-right">
+                            <button id="closeCrop" class="btn btn-round btn-fill btn-default">Cancel</button>
+                            <button id="cropSubmit" class="btn btn-round btn-fill btn-info">
+                                <i class="material-icons">crop</i> Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+    const STORAGE_URL = 'http://localhost:8081';
+    const PICTURE_URL = 'http://localhost:8080';
+
+    $(document).ready(function() {
+        $().ready(function() {
+
+              loadPictures();
+
+              var pictures = document.getElementById('pictures');
+
+              function loadPictures(){
+                  $.ajax({
+                    url: PICTURE_URL+'/pictures',
+                    type: 'GET',
+                    success: function (data) {
+                      console.log("Success:\n" + JSON.stringify(data));
+
+                      $(pictures).html(''); //clear items container
+
+                      $(data).each( function(i, obj){
+                        addPictureItem( i, obj )
+                      });
+                      //todo add pagination
+                    },
+                    error: function (err) {
+                      //show error message
+                      console.log(err.statusText+"\n");
+                    }
+                  });
+              }
+
+              function addPictureItem( i, obj ) {
+                  if( i % 4 == 0 ) {
+                    row = $('<div/>', {'class': 'row'}).appendTo( $(pictures) );
+                  }
+
+                  col = $('<div/>', { 'id':     'picture_'+obj.id,
+                                      'class':  'col ml-auto ar-auto'}
+                  ).appendTo( row );
+
+                  img = $('<img/>', { 'class' : 'item-container rounded pointer',
+                                      'style' : 'inline-block',
+                                      'height': 'auto',
+                                      'src'   : STORAGE_URL+obj.url
+                                      }
+                  ).appendTo( col );
+              }
+        });
+    });
+
+</script>
     
 </body>
