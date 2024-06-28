@@ -23,8 +23,47 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
+                            <button id="add_pictures_btn" class="btn btn-round mb-3" data-toggle="modal" data-target="#upload_pictures_dialog">
+                                <i class="material-icons">add_photo_alternate</i>
+                            </button>
                             <div id="pictures" class="gallery"></div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade ml-auto mr-auto" id="upload_pictures_dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="width: 350px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Upload pictures</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="material-icons">clear</i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input id="up_pic_id" type="hidden"/>
+                    <div class="row">
+                        <div class="col up-pic">
+                            <div id="up_pic_wrap" style="display: flex; height: 150px;">
+                                <input type="file" id="up_pic" style="display:none;">
+                                <label for="up_pic" style="margin: auto;">
+                                    <a id="up_pic_btn">
+                                        <i class="material-icons">image_search</i>
+                                    </a>
+                                </label>
+                            </div>
+                            <div class="hover-tools-wrap">
+                                <img id="pic_cropped_img" width="150" class="rounded pointer m-auto" data-toggle="modal" data-target="#crop_dialog">
+                                <i id="up_pic_cancel" class="material-icons hover-tools pointer" style="display: none;">cancel</i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btn_up_pic_cancel" type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
+                        <button id="btn_up_pic" type="button" class="btn btn-link">Upload</button>
                     </div>
                 </div>
             </div>
@@ -44,7 +83,8 @@
                         <div class="text-right">
                             <button id="closeCrop" class="btn btn-round btn-fill btn-default">Cancel</button>
                             <button id="cropSubmit" class="btn btn-round btn-fill btn-info">
-                                <i class="material-icons">crop</i> Save</button>
+                                <i class="material-icons">crop</i> Save
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -64,7 +104,8 @@
 
               loadPictures();
 
-              var pictures = document.getElementById('pictures');
+              var addPicturesBtn = document.getElementById('add_pictures_btn');
+              var pictures       = document.getElementById('pictures');
 
               function loadPictures(){
                   $.ajax({
@@ -107,5 +148,11 @@
     });
 
 </script>
+
+<!--   Core JS Files   -->
+<script th:src="@{'/js/core/popper.min.js'}" type="text/javascript"></script>
+<script th:src="@{'/js/core/bootstrap-material-design.min.js'}" type="text/javascript"></script>
+<!--  Plugin for Sweet Alert -->
+<script th:src="@{'/js/plugins/sweetalert2.js'}" type="text/javascript"></script>
     
 </body>
