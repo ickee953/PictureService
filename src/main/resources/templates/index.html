@@ -100,12 +100,11 @@
 <script th:src="@{'/js/plugins/sweetalert2.js'}" type="text/javascript"></script>
 <script>
 
-    const STORAGE_URL = 'http://localhost:8081';
-    const PICTURE_URL = 'http://localhost:8080';
+    const STORAGE_URL = '[[${@environment.getProperty("url.service.storage.base")}]]';
 
     function loadPictures(page, size){
         $.ajax({
-            url: PICTURE_URL+'/pictures/page/'+page+'/'+size,
+            url: '/pictures/page/'+page+'/'+size,
             type: 'GET',
             success: function (data) {
                 console.log("Success:\n" + JSON.stringify(data));
