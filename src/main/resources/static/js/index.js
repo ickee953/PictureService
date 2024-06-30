@@ -81,9 +81,24 @@ function loadPictures(page, size){
 
                   updatePic.files = null;
 
+                  upPicImage.style.display = 'none';
                   croppedImg.src = '';
-                  upPicBtn.style.display = 'inline-block';
+                  upPicBtn.style.display = 'flex';
                   upPicCancelBtn.style.display = 'none';
+              }
+
+              closeCropBtn.onclick = function() {
+                  if(jcrop) jcrop.destroy();
+                  canvas = null;
+              }
+
+              upPicCancelBtn.onclick = function() {
+                updatePic.files = null;
+
+                upPicImage.style.display = 'none';
+                croppedImg.src = '';
+                upPicBtn.style.display = 'flex';
+                upPicCancelBtn.style.display = 'none';
               }
 
               function showCropDialog(){
@@ -223,9 +238,6 @@ function loadPictures(page, size){
             showCropDialog();
           });
 
-          closeCrop.onclick = function(){
-            hideCropDialog();
-          };
 
         submitCropBtn.onclick = function(){
              var image = new Image();
@@ -241,12 +253,14 @@ function loadPictures(page, size){
                  canvas = cropImage(this);
                  if( canvas != -1 ){
                    upPicImage.src = canvas.toDataURL();
+
+                   upPicImage.style.display = 'inline-block';
                    upPicBtn.style.display = 'none';
                    upPicCancelBtn.style.display = 'block';
 
                    if(jcrop) jcrop.destroy();
                    //hide crop dialog
-                   closeCropBtn.click();
+                   hideCropDialog();
                  }
                }
              }
