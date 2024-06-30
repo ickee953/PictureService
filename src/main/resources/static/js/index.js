@@ -176,41 +176,45 @@ function loadPictures(page, size){
 
               btnUpPic.onclick = function() {
 
-                let file = null;
-                let formData = new FormData();
+                var fullPath = upPicInput.value;
+                if (fullPath) {
+                    let fileName = fullPath.split(/(\\|\/)/g).pop()
 
-                let blob = canvas.toBlob(function(blob) {
-                    fileName = "pic.png";
-                    file = new File([blob], fileName, { type: 'image/png' });
-                    formData.append("files", file);
+                    let file = null;
+                    let formData = new FormData();
 
-                    $(btnUpPic).prop("disabled", true);
+                    let blob = canvas.toBlob(function(blob) {
+                        file = new File([blob], fileName, { type: 'image/png' });
+                        formData.append("files", file);
 
-                    $.ajax({
-                        url: '/pictures',
-                        type: 'POST',
-                        data: formData,
-                        contentType: 'multipart/form-data',
-                        processData : false, // prevent jQuery from automatically
-                        contentType : false,
-                        success: function (data) {
-                            console.log("success: \n" + JSON.stringify(data));
+                        $(btnUpPic).prop("disabled", true);
 
-                            loadPictures(0, 8);
+                        $.ajax({
+                            url: '/pictures',
+                            type: 'POST',
+                            data: formData,
+                            contentType: 'multipart/form-data',
+                            processData : false, // prevent jQuery from automatically
+                            contentType : false,
+                            success: function (data) {
+                                console.log("success: \n" + JSON.stringify(data));
 
-                            $(btnUpPic).prop("disabled", false);
+                                loadPictures(0, 8);
 
-                        },
-                        error: function (e) {
-                            $(btnUpPic).prop("disabled", false);
+                                $(btnUpPic).prop("disabled", false);
 
-                            //show error message
-                            console.log('Error [ ' + e.status + ' : ' + e.statusText + ' ]');
+                            },
+                            error: function (e) {
+                                $(btnUpPic).prop("disabled", false);
 
-                            alert(e.statusText);
-                        }
-                    });
-                }, 'image/png');
+                                //show error message
+                                console.log('Error [ ' + e.status + ' : ' + e.statusText + ' ]');
+
+                                alert(e.statusText);
+                            }
+                        });
+                    }, 'image/png');
+                }
               }
 
           $('#up_pic_btn').click(function(event){
