@@ -203,6 +203,7 @@ function loadPictures(page, size){
 
                                 $(btnUpPic).prop("disabled", false);
 
+                                $(upPicCancel).click();
                             },
                             error: function (e) {
                                 $(btnUpPic).prop("disabled", false);
