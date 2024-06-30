@@ -1,3 +1,5 @@
+var updatePic = {};
+
 function loadPictures(page, size){
         $.ajax({
             url: '/pictures/page/'+page+'/'+size,
@@ -62,19 +64,26 @@ function loadPictures(page, size){
               let pictures       = document.getElementById('pictures');
 
               //crop functions
-              let upPicBtn      = document.getElementById('up_pic_wrap');
-              let upPicInput    = document.getElementById('up_pic');
-              let upPicImage    = document.getElementById('pic_cropped_img');
-              let cropDialog    = document.getElementById('cropDialog');
-              let upPicCancel   = document.getElementById('btn_up_pic_cancel');
-              let croppedImg    = document.getElementById('inputCropImage');
-
-              //init
-              upPicImage.parentElement.style.display = 'none';
+              let upPicBtn       = document.getElementById('up_pic_wrap');
+              let upPicInput     = document.getElementById('up_pic');
+              let upPicImage     = document.getElementById('pic_cropped_img');
+              let cropDialog     = document.getElementById('cropDialog');
+              let btnUpPic       = document.getElementById('btn_up_pic');
+              let upPicCancel    = document.getElementById('btn_up_pic_cancel');
+              let croppedImg     = document.getElementById('inputCropImage');
+              let submitCropBtn  = document.getElementById("cropSubmit");
+              let closeCropBtn   = document.getElementById("closeCrop");
+              let upPicCancelBtn = document.getElementById("up_pic_cancel");
 
               upPicCancel.onclick = function() {
-                upPicImage.parentElement.style.display = 'none';
-                upPicBtn.style.display = 'flex';
+                  if(jcrop) jcrop.destroy();
+                  canvas = null;
+
+                  updatePic.files = null;
+
+                  croppedImg.src = '';
+                  upPicBtn.style.display = 'inline-block';
+                  upPicCancelBtn.style.display = 'none';
               }
 
               function showCropDialog(){
@@ -85,12 +94,11 @@ function loadPictures(page, size){
                 cropDialog.style.display = "none";
               }
 
-              var _URL = window.URL || window.webkitURL;
-
               // Image cropping functions
-              var jcrop;
+              var jcrop, canvas;
 
               function initCropRect( imgSrc ){
+
                 let rect = Jcrop.Rect.sizeOf(
                     imgSrc.naturalWidth,
                     imgSrc.naturalHeight
@@ -102,7 +110,17 @@ function loadPictures(page, size){
                     multi: false
                 });
 
-                jcrop.newWidget(rect.scale( .75, .75).center(imgSrc.naturalWidth, imgSrc.naturalHeight));
+                widget = jcrop.newWidget(rect.scale( .75, .75).center(imgSrc.naturalWidth, imgSrc.naturalHeight));
+
+                jcrop.listen('crop.change',function(widget,e){
+                    const pos = widget.pos;
+                    if( pos.w < minSize.w ) pos.w = minSize.w;
+                    if( pos.h < minSize.h ) pos.h = minSize.h;
+                    if( pos.w > maxSize.w ) pos.w = maxSize.w;
+                    if( pos.h > maxSize.h ) pos.h = maxSize.h;
+
+                    widget.render();
+                });
 
                 jcrop.focus();
               }
@@ -156,77 +174,138 @@ function loadPictures(page, size){
                 return -1;
               }
 
-              croppedImg.onclick = function() {
-                $(croppedImg).attr('src',  STORAGE_URL+updateItem.url);
-                showCropDialog();
-                initCropRect(croppedImg);
-          }
+              btnUpPic.onclick = function() {
+
+                let file = null;
+                let formData = new FormData();
+
+                let blob = canvas.toBlob(function(blob) {
+                    fileName = "pic.png";
+                    file = new File([blob], fileName, { type: 'image/png' });
+                    formData.append("files", file);
+
+                    $(btnUpPic).prop("disabled", true);
+
+                    $.ajax({
+                        url: '/pictures',
+                        type: 'POST',
+                        data: formData,
+                        contentType: 'multipart/form-data',
+                        processData : false, // prevent jQuery from automatically
+                        contentType : false,
+                        success: function (data) {
+                            console.log("success: \n" + JSON.stringify(data));
+
+                            loadPictures(0, 8);
+
+                            $(btnUpPic).prop("disabled", false);
+
+                        },
+                        error: function (e) {
+                            $(btnUpPic).prop("disabled", false);
+
+                            //show error message
+                            console.log('Error [ ' + e.status + ' : ' + e.statusText + ' ]');
+
+                            alert(e.statusText);
+                        }
+                    });
+                }, 'image/png');
+              }
 
           $('#up_pic_btn').click(function(event){
             $(croppedImg).attr('src', null);
             showCropDialog();
           });
 
-          $('#closeCrop').click(function(event){
+          closeCrop.onclick = function(){
             hideCropDialog();
-          });
+          };
 
-          $('#cropSubmit').click(function(event){
+        submitCropBtn.onclick = function(){
+             var image = new Image();
+             image.crossOrigin = "Anonymous";
+             image.src = croppedImg.src;
+             image.width = croppedImg.width;
+             image.height = croppedImg.height;
+             image.naturalWidth = croppedImg.naturalWidth;
+             image.naturalHeight = croppedImg.naturalHeight;
 
-            var image = new Image();
-            image.crossOrigin = "Anonymous";
-            image.src = croppedImg.src;
+             image.onload = function(){
+               if(jcrop) {
+                 canvas = cropImage(this);
+                 if( canvas != -1 ){
+                   upPicImage.src = canvas.toDataURL();
+                   upPicBtn.style.display = 'none';
+                   upPicCancelBtn.style.display = 'block';
 
-            image.onload = function(){
-              if(jcrop) {
-                // cropped canvas
-                var cropped = document.createElement('canvas');
-                var context = cropped.getContext("2d");
+                   if(jcrop) jcrop.destroy();
+                   //hide crop dialog
+                   closeCropBtn.click();
+                 }
+               }
+             }
+        };
 
-                context.drawImage(
-                    image,
-                    jcrop.active.pos.x * image.naturalWidth / image.width,
-                    jcrop.active.pos.y * image.naturalHeight / image.height,
-                    jcrop.active.pos.w * image.naturalWidth / image.width,
-                    jcrop.active.pos.h * image.naturalHeight / image.height,
-                    0,
-                    0,
-                    jcrop.active.pos.w * image.naturalWidth / image.width,
-                    jcrop.active.pos.h * image.naturalHeight / image.height
-                );
-                // img, sx, sy, swidth, sheight, dx, dy, dwidth, dheight
-                // s = source
-                // d = destination
+        function checkSize( fileResult, min, max ){
 
-                upPicImage.src = cropped.toDataURL();
+            if(fileResult.width < min.w || fileResult.height < min.h){
+              alert('Wrong image size. Must be more than ' + min.w + ' x ' + min.h);
 
-                upPicBtn.style.display = 'none';
-                upPicCancel.style.display = 'inline-block';
-                upPicImage.parentElement.style.display  = 'inline-block';
+              return -1;
+            }
 
-              }
-            };
+            if(fileResult.width > max.w || fileResult.height > max.h){
+              alert('Wrong image size. Must be smaller than ' + max.w + ' x ' + max.h);
 
-            hideCropDialog();
-          });
+              return -1;
+            }
 
-          upPicInput.onchange = function () {
-            $(croppedImg).attr('src', '');
+            return fileResult.src;
+        }
+
+        const EMPTY_IMG_SRC_URL = null;
+
+        var minSize = Jcrop.Rect.sizeOf(200, 200);
+        var maxSize = Jcrop.Rect.sizeOf(2000, 2000);
+
+        upPicInput.onchange = function(){
+            var _URL = window.URL || window.webkitURL;
+
             if (this.files && this.files[0]) {
-                img = new Image();
+                var fileTypes = ['jpg', 'jpeg', 'png'];
+                var extension = this.files[0].name.split('.').pop().toLowerCase(),  //file extension from input file
+                isSuccess = fileTypes.indexOf(extension) > -1;  //is extension in acceptable types
 
+                if (!isSuccess) {
+                  closeCropBtn.click();
+                  alert("Wrong file type!");
+                  return;
+                }
+
+                $(submitCropBtn).removeAttr('disabled');
+
+                img = new Image();
                 img.src = _URL.createObjectURL(this.files[0]);
 
                 img.onload = function() {
-
-                    if( getImgForCrop( this, 30, 30 ) != 0 ) hideCropDialog();
-
+                  result_src = checkSize( img, minSize, maxSize );
+                  if( result_src != -1 ) {
+                    //show crop dialog
+                    croppedImg.src = result_src;
+                    initCropRect( croppedImg );
+                  } else {
+                    //hide crop dialog
+                    closeCropBtn.click();
+                  }
                 }
 
                 img.onerror = function() {
-                    alert('not a valid file: ' + file.type);
+                  alert('not a valid file: ' + file.type);
+                  //hide crop dialog
+                  closeCropBtn.click();
                 }
+              }
             }
-          }
         });
     });
