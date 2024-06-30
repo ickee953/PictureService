@@ -80,6 +80,7 @@ function loadPictures(page, size){
                   canvas = null;
 
                   updatePic.files = null;
+                  upPicInput.value = null;
 
                   upPicImage.style.display = 'none';
                   croppedImg.src = '';
@@ -94,6 +95,8 @@ function loadPictures(page, size){
 
               upPicCancelBtn.onclick = function() {
                 updatePic.files = null;
+                upPicInput.value = null;
+                canvas = null;
 
                 upPicImage.style.display = 'none';
                 croppedImg.src = '';
@@ -197,6 +200,8 @@ function loadPictures(page, size){
 
                     let file = null;
                     let formData = new FormData();
+
+                    if( canvas == null ) return;
 
                     let blob = canvas.toBlob(function(blob) {
                         file = new File([blob], fileName, { type: 'image/png' });
