@@ -23,7 +23,7 @@
 
 .hover-tools-wrap {
   position: relative;
-  display: inline-flex;
+  display: table;
 }
 
 /*.col .hover-tools-wrap i {

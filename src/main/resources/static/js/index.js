@@ -166,9 +166,17 @@ function loadPictures(page, size){
 
               function cropImage(imgSrc){
                 if(jcrop) {
+
+                    let scaleW = parseFloat( imgSrc.naturalWidth / imgSrc.width );
+                    let scaleH = parseFloat( imgSrc.naturalHeight / imgSrc.height );
+
                     // cropped canvas
-                    var getCropped = document.createElement('canvas');
-                    var context = getCropped.getContext("2d");
+                    let cropped = document.createElement('canvas');
+
+                    cropped.width  = jcrop.active.pos.w * scaleW;
+                    cropped.height = jcrop.active.pos.h * scaleH;
+
+                    var context = cropped.getContext("2d");
 
                     context.drawImage(
                         imgSrc,
@@ -185,7 +193,7 @@ function loadPictures(page, size){
                     // s = source
                     // d = destination
 
-                    return getCropped;
+                    return cropped;
 
                 }
 
