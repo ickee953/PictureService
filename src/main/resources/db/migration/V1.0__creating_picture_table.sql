@@ -1,5 +1,3 @@
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
 CREATE TABLE picture (
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL,
     url VARCHAR(100) NOT NULL,
