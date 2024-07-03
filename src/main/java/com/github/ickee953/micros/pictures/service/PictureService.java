@@ -55,7 +55,7 @@ public class PictureService {
 
     public Picture add(PictureDto picture) {
         return pictureRepository.save( new Picture()
-                .setUrl(picture.getFilename())
+                .setPath(picture.getFilename())
                 .setCreatedAt(LocalDateTime.now())
         );
     }

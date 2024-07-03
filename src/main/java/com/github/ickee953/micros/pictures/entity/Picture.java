@@ -25,7 +25,7 @@ public class Picture {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private String url;
+    private String path;
     private LocalDateTime createdAt;
 
 }
