@@ -53,7 +53,7 @@ public class PictureService {
         return pictureRepository.findAll(pageable);
     }
 
-    public Picture add(PictureDto picture) {
+    public Picture create(PictureDto picture) {
         return pictureRepository.save( new Picture()
                 .setPath(picture.getFilename())
                 .setCreatedAt(LocalDateTime.now())

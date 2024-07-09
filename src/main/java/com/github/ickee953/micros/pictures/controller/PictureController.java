@@ -33,7 +33,7 @@ public class PictureController {
         uploadedFilesPaths.forEach( url -> {
             PictureDto dto = new PictureDto(url);
 
-            pictureService.add( dto );
+            pictureService.create( dto );
         } );
 
 
