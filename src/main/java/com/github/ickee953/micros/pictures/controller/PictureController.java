@@ -36,7 +36,6 @@ public class PictureController {
             pictureService.create( dto );
         } );
 
-
         return ResponseEntity.ok(pictureService.getAll());
     }
 

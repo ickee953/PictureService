@@ -8,10 +8,11 @@ spring:
     url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/pictures-api
     username: postgres
     password: postgres
-
-url:
-  service:
-      storage:
+service:
+    storage:
+      username: storage_service_user
+      password: password
+      url:
         base: '${URL_STORAGE_SERVICE:http://172.17.0.2:8081}'
         upload: '${METHOD_UPLOAD_FILE:/upload}'
         files:  '${METHOD_GET_FILE:/files}'

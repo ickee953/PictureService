@@ -51,7 +51,7 @@ function loadPictures(page, size){
         img = $('<img/>', { 'class' : 'item-container rounded pointer',
                             'style' : 'inline-block',
                             'height': 'auto',
-                            'src'   : STORAGE_URL+obj.url
+                            'src'   : STORAGE_URL+obj.path
         }).appendTo( col );
     }
 
