@@ -1,4 +1,10 @@
 spring:
+  security:
+    user:
+      name: ${PICTURE_SERVICE_USR_NAME:picture_service_user}
+      password: ${PICTURE_SERVICE_USER_PASSWORD:password}
+      roles:
+        - SERVICE
   application:
     name: picture_service
   jpa:
