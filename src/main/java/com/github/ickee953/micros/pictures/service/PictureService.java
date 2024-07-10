@@ -7,7 +7,7 @@
 
 package com.github.ickee953.micros.pictures.service;
 
-import com.github.ickee953.micros.pictures.client.PictureClient;
+import com.github.ickee953.micros.pictures.client.FileClient;
 import com.github.ickee953.micros.pictures.dto.PictureDto;
 import com.github.ickee953.micros.pictures.entity.Picture;
 import com.github.ickee953.micros.pictures.repository.PictureRepository;
@@ -41,7 +41,7 @@ public class PictureService {
 
     }
 
-    private final PictureClient pictureClient;
+    private final FileClient pictureClient;
 
     private final PictureRepository pictureRepository;
 
