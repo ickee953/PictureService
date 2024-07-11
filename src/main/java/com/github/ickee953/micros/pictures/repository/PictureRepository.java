@@ -8,8 +8,14 @@
 package com.github.ickee953.micros.pictures.repository;
 
 import com.github.ickee953.micros.pictures.entity.Picture;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface PictureRepository extends JpaRepository<Picture, String> {
+@Repository
+public interface PictureRepository extends CrudRepository<Picture, String> {
+
+    Page<Picture> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
 }

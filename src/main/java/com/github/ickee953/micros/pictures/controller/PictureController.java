@@ -9,7 +9,7 @@ package com.github.ickee953.micros.pictures.controller;
 
 import com.github.ickee953.micros.pictures.dto.PictureDto;
 import com.github.ickee953.micros.pictures.entity.Picture;
-import com.github.ickee953.micros.pictures.service.PictureService;
+import com.github.ickee953.micros.pictures.service.DefaultPictureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PictureController {
 
-    private final PictureService pictureService;
+    private final DefaultPictureService pictureService;
 
     @PostMapping
     public ResponseEntity<Iterable<Picture>> save(@RequestPart(name = "files", required = true) List<MultipartFile> pics) {
