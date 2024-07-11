@@ -96,6 +96,8 @@
 <script th:src="@{'/js/plugins/sweetalert2.js'}" type="text/javascript"></script>
 <script>
     const STORAGE_URL = '[[${@environment.getProperty("service.storage.url.base")}]]';
+    const CSRF_HEADER_NAME = '[[${_csrf.headerName}]]';
+    const CSRF_TOKEN = '[[${_csrf.token}]]';
 </script>
 <script th:src="@{'/js/index.js'}"></script>
 

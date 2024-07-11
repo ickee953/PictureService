@@ -202,14 +202,18 @@ function loadPictures(page, size){
 
               btnUpPic.onclick = function() {
 
+                if( canvas == null ) return;
+
                 var fullPath = upPicInput.value;
                 if (fullPath) {
+
                     let fileName = fullPath.split(/(\\|\/)/g).pop()
 
                     let file = null;
                     let formData = new FormData();
 
-                    if( canvas == null ) return;
+                    let headers = {};
+                    headers[CSRF_HEADER_NAME] = CSRF_TOKEN;
 
                     let blob = canvas.toBlob(function(blob) {
                         file = new File([blob], fileName, { type: 'image/png' });
@@ -221,6 +225,7 @@ function loadPictures(page, size){
                             url: '/pictures',
                             type: 'POST',
                             data: formData,
+                            headers: headers,
                             contentType: 'multipart/form-data',
                             processData : false, // prevent jQuery from automatically
                             contentType : false,
