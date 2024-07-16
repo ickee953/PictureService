@@ -7,7 +7,6 @@
 
 package com.github.ickee953.micros.pictures.client;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
