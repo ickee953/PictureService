@@ -33,3 +33,9 @@ service:
         base: '${URL_STORAGE_SERVICE:http://172.17.0.2:8081}'
         upload: '${METHOD_UPLOAD_FILE:/upload}'
         files:  '${METHOD_GET_FILE:/files}'
+app:
+  default-upload-filename: 'pic.jpg'
+  kafka:
+    topic:
+      file-upload: 'file-upload-topic'
+      file-uploaded: 'file-uploaded-topic'
