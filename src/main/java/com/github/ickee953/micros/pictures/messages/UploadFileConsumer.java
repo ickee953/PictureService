@@ -1,5 +1,6 @@
 package com.github.ickee953.micros.pictures.messages;
 
+import com.github.ickee953.micros.pictures.common.Base64DecodedMultipartFile;
 import com.github.ickee953.micros.pictures.dto.PictureDto;
 import com.github.ickee953.micros.pictures.entity.Picture;
 import com.github.ickee953.micros.pictures.service.DefaultPictureService;
@@ -34,50 +35,11 @@ public class UploadFileConsumer {
     public void uploadFile(ConsumerRecord<String, byte[]> record){
         log.info("received message : {}", record);
 
-        List<MultipartFile> files = List.of(
-                new MultipartFile() {
-                    @Override
-                    public String getName() {
-                        return "pic.jpg";
-                    }
+        assert record.value() != null;
 
-                    @Override
-                    public String getOriginalFilename() {
-                        return "pic.jpg";
-                    }
+        MultipartFile file = new Base64DecodedMultipartFile("pic.jpg", record.value());
 
-                    @Override
-                    public String getContentType() {
-                        return "jpg";
-                    }
-
-                    @Override
-                    public boolean isEmpty() {
-                        return false;
-                    }
-
-                    @Override
-                    public long getSize() {
-                        return record.value().length;
-                    }
-
-                    @Override
-                    public byte[] getBytes() throws IOException {
-                        return record.value();
-                    }
-
-                    @Override
-                    public InputStream getInputStream() throws IOException {
-                        return new ByteArrayInputStream(record.value());
-                    }
-
-                    @Override
-                    public void transferTo(File dest) throws IOException, IllegalStateException {
-
-                    }
-                }
-        );
-        List<String> uploadedFilesPaths = pictureService.uploadFiles(files);
+        List<String> uploadedFilesPaths = pictureService.uploadFiles(List.of(file));
 
         uploadedFilesPaths.forEach( url -> {
             PictureDto dto = new PictureDto(url);
