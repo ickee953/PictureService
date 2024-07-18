@@ -24,7 +24,12 @@ CREATE TABLE IF NOT EXISTS user_authority(
     CONSTRAINT uk_user_authority UNIQUE (app_user, authority)
 );
 
---init
---insert into app_authority(id, authority) values('b3562a5d-e6ac-40dd-8eb7-aa0e06bc2a7a', 'ROLE_MANAGER');
---insert into app_user(id, username, password) values('e24a2790-d727-48be-a9a4-a4596ae802f', 'user', '{noop}password');
---insert into user_authority(app_user, authority) values('e24a2790-d727-48be-a9a4-a4596ae802f3', 'b3562a5d-e6ac-40dd-8eb7-aa0e06bc2a7a');
+DO $$
+DECLARE
+    user_id uuid = uuid_generate_v4();
+    role_id uuid = uuid_generate_v4();
+BEGIN
+    INSERT INTO app_authority(id, authority) VALUES(role_id, 'ROLE_MANAGER');
+    INSERT INTO app_user(id, username, password) VALUES(user_id, 'user', '{noop}password');
+    INSERT INTO user_authority(app_user, authority) VALUES(user_id, role_id);
+END $$;
