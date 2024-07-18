@@ -60,12 +60,7 @@ echo "Done."
 
 echo "Run PostreSQL DB server..."
 
-if [ ! -f ../ServiceConfig/kind-config.yaml ]; then
-    echo "Config file for database docker image not found! Get config repository..."
-    git clone https://github.com/ickee953/ServiceConfig.git ../ServiceConfig
-fi
-
-docker-compose -f ../ServiceConfig/db-compose-env.yaml up -d
+docker-compose -f db-compose-env.yaml up -d
 
 echo "Done."
 

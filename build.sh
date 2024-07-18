@@ -18,4 +18,4 @@ docker build . -t ickee953/pictures-api:1.0.0
 
 echo "Done."
 
-echo "To run PictureService type on terminal: 'docker run ickee953/pictures-api:1.0.0' and open browser at http://localhost:8080/swagger-ui.html"
+echo "To run PictureService type on terminal: 'docker run ickee953/pictures-api:1.0.0' and open browser at http://localhost:8080/"
